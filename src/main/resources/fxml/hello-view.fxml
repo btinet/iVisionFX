@@ -23,7 +23,7 @@
                 <ImageView fitHeight="142" fitWidth="143"
                            pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@marker_0.png" />
+                        <Image url="@../img/marker_0.png" />
                     </image>
                 </ImageView>
             </children>

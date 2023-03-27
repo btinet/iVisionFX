@@ -1,4 +1,4 @@
-package ivisionfx.ivisionfx;
+package ivisionfx;
 
 import ivisionfx.interaction.KeyPolling;
 import javafx.application.Application;
@@ -21,9 +21,9 @@ public class GameApplication extends Application {
     public void start(Stage stage) throws IOException {
 
         setStage(stage);
-        FXMLLoader fxmlLoader = new FXMLLoader(GameApplication.class.getResource("hello-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(GameApplication.class.getResource("/fxml/hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), width, height);
-        scene.getStylesheets().add(getClass().getResource("demo.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/css/demo.css").toExternalForm());
         scene.setFill(new LinearGradient(
                 0, 0, 1, 1, true,                      //sizing
                 CycleMethod.NO_CYCLE,                  //cycling

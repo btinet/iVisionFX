@@ -1,9 +1,10 @@
-package ivisionfx.ivisionfx;
+package ivisionfx.controller;
 
 import com.almasb.fxgl.app.GameController;
 import com.almasb.fxgl.profile.DataFile;
 import ivisionfx.interaction.GameLoopTimer;
 import ivisionfx.interaction.KeyPolling;
+import ivisionfx.GameApplication;
 import javafx.animation.FadeTransition;
 import javafx.animation.FillTransition;
 import javafx.animation.ScaleTransition;
@@ -16,16 +17,15 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static ivisionfx.ivisionfx.GameApplication.stage;
+import static ivisionfx.GameApplication.stage;
 
-public class HelloController implements Initializable, GameController {
+public class MainController implements Initializable, GameController {
     @FXML
     private Button toggleFullscreenText;
 
@@ -36,25 +36,27 @@ public class HelloController implements Initializable, GameController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-
+        if(GameApplication.fullscreen) {
+            toggleFullscreenText.setText("Fenstermodus");
+        } else {
+            toggleFullscreenText.setText("Vollbild");
+        }
 
         gameLoop  = new GameLoopTimer() {
             @Override
             public void tick(float secondsSinceLastFrame) {
+
                 if (key.isDown(KeyCode.CONTROL)) {
                     System.out.println(key);
                 }
+
+                if (key.isPressed(KeyCode.F1)) {
+                    toggleFullscreen();
+                }
+
             }
         };
         gameLoop.start();
-
-        if(GameApplication.fullscreen) {
-            toggleFullscreenText.setText("Fenstermodus");
-            System.out.println("YES");
-        } else {
-            toggleFullscreenText.setText("Vollbild");
-            System.out.println("NO");
-        }
 
     }
 
