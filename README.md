@@ -43,7 +43,7 @@ den Förderverein des Treptow-Kollegs.*
 
 - Windows-, Mac- oder Linux-basiertes Betriebssystem
 - ReacTIVision Engine Software ([https://reactivision.sourceforge.net/](https://reactivision.sourceforge.net/))
-- JAVA SE 8 ([https://www.oracle.com/java/technologies/](https://www.oracle.com/java/technologies/))
+- JAVA FX 19 ([https://www.oracle.com/java/technologies/](https://www.oracle.com/java/technologies/))
 - kompatible USB-Kamera (low latency sowie hohe Bildrate empfohlen)
 
 ## iVision Hardware
