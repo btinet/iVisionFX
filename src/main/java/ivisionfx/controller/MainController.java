@@ -2,6 +2,7 @@ package ivisionfx.controller;
 
 import com.almasb.fxgl.app.GameController;
 import com.almasb.fxgl.profile.DataFile;
+import ivisionfx.interaction.ButtonConfig;
 import ivisionfx.interaction.GameLoopTimer;
 import ivisionfx.interaction.KeyPolling;
 import ivisionfx.GameApplication;
@@ -46,17 +47,22 @@ public class MainController implements Initializable, GameController {
             @Override
             public void tick(float secondsSinceLastFrame) {
 
-                if (key.isDown(KeyCode.CONTROL)) {
-                    System.out.println(key);
-                }
-
-                if (key.isPressed(KeyCode.F1)) {
-                    toggleFullscreen();
-                }
+                getUserInput();
 
             }
         };
         gameLoop.start();
+
+    }
+
+    public void getUserInput () {
+
+        // Periodische Tastenabfragen
+        if (key.isDown(ButtonConfig.actionPrimary))             System.out.println(key);
+
+        // einmalige Tastenabfragen (innerhalb Anschlagverzögerung)
+        if (key.isPressed(ButtonConfig.toggleFullscreen))       toggleFullscreen();
+        if(key.isPressed(ButtonConfig.gameMenu))                exit();
 
     }
 
