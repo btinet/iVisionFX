@@ -24,6 +24,8 @@ den Förderverein des Treptow-Kollegs.*
    1. [Bauplan](./docs/hardware.md#ivision-hardware)
    2. [Interface](./docs/hardware.md#ivision-hardware)
 4. [Getting started](#getting-started)
+   1. [Anwendungen](./docs/demo_applications.md#beispielanwendungen)
+      1. [Pong React](./docs/demo_applications.md#pong-react)
 
 ## Projektstatus
 

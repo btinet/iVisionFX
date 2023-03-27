@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b2208fb7-21a3-4d59-8798-e532b0cb5d4f" name="Changes" comment="add docs">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="b2208fb7-21a3-4d59-8798-e532b0cb5d4f" name="Changes" comment="update ignored files">
+      <change afterPath="$PROJECT_DIR$/docs/assets/images/sketch/draft_pong_react_230327-01.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/demo_applications.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ivisionfx/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ivisionfx/controller/MainController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,12 +102,20 @@
       <option name="project" value="LOCAL" />
       <updated>1679893884215</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="update ignored files">
+      <created>1679928538567</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1679928538568</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="add docs" />
-    <option name="LAST_COMMIT_MESSAGE" value="add docs" />
+    <MESSAGE value="update ignored files" />
+    <option name="LAST_COMMIT_MESSAGE" value="update ignored files" />
   </component>
 </project>
