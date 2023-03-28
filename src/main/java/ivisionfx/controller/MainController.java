@@ -1,11 +1,14 @@
 package ivisionfx.controller;
 
+import TUIO.TuioClient;
+import TUIO.TuioListener;
 import com.almasb.fxgl.app.GameController;
 import com.almasb.fxgl.profile.DataFile;
+import ivisionfx.GameApplication;
 import ivisionfx.interaction.ButtonConfig;
 import ivisionfx.interaction.GameLoopTimer;
 import ivisionfx.interaction.KeyPolling;
-import ivisionfx.GameApplication;
+import ivisionfx.interaction.gamepad.GamepadListener;
 import javafx.animation.FadeTransition;
 import javafx.animation.FillTransition;
 import javafx.animation.ScaleTransition;
@@ -14,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -28,6 +32,12 @@ import static ivisionfx.GameApplication.stage;
 public class MainController implements Initializable, GameController {
     @FXML
     private Button toggleFullscreenText;
+    @FXML
+    private ImageView symbol;
+
+    private TuioListener gamepadListener;
+
+    private final TuioClient client = new TuioClient();
 
     private final KeyPolling key = KeyPolling.getInstance();
 
@@ -36,11 +46,23 @@ public class MainController implements Initializable, GameController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        // Verarbeitung der Benutzereingabe über Reactable-Marker.
+        gamepadListener = new GamepadListener();
+
+        // UDP-Client, der Datenpakete von Port 3333 abfängt und weiterleitet.
+        client.addTuioListener(gamepadListener);
+        // Verbindung herstellen und Abfrage starten.
+        client.connect();
+
+        // Nur für Entwicklungszwecke
         if(GameApplication.fullscreen) {
             toggleFullscreenText.setText("Fenstermodus");
         } else {
             toggleFullscreenText.setText("Vollbild");
         }
+        // ENDE
+
+        // START: Game Loop
 
         gameLoop  = new GameLoopTimer() {
             @Override
@@ -50,6 +72,9 @@ public class MainController implements Initializable, GameController {
 
             }
         };
+
+        // ENDE: Game Loop
+
         gameLoop.start();
 
     }
@@ -76,6 +101,8 @@ public class MainController implements Initializable, GameController {
             this.toggleFullscreenText.setText("Fenstermodus");
         }
     }
+
+
 
     @Override
     public void exit() {

@@ -20,10 +20,10 @@
             <children>
                 <Label id="content">
                 </Label>
-                <ImageView fitHeight="142" fitWidth="143"
+                <ImageView fx:id="symbol" fitHeight="142" fitWidth="143"
                            pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../img/marker_0.png" />
+                        <Image  url="@../img/marker_0.png" />
                     </image>
                 </ImageView>
             </children>

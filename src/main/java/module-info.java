@@ -4,6 +4,8 @@ module ivisionfx.ivisionfx {
 
     requires com.almasb.fxgl.all;
     requires annotations;
+    requires batik.transcoder;
+    requires java.desktop;
 
     opens fxml to javafx.fxml;
     exports ivisionfx.controller;
