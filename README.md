@@ -41,6 +41,9 @@ den Förderverein des Treptow-Kollegs.*
 
 - ✅ Feedback-Indikator (Präsentationsfolien)
 - ✅ Feedback-Beamer Output
+- ✅ Basic Game Engine
+- ✅ Keyboard User Input
+- ✅ ReacTIVision User Input
 
 ## Systemvoraussetzungen
 
