@@ -43,6 +43,10 @@ public class MainController implements Initializable, GameController {
 
     private GameLoopTimer gameLoop;
 
+    public MainController () {
+
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
