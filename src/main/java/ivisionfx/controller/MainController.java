@@ -1,7 +1,7 @@
 package ivisionfx.controller;
 
 import TUIO.TuioClient;
-import TUIO.TuioListener;
+import TUIO.TuioObject;
 import com.almasb.fxgl.app.GameController;
 import com.almasb.fxgl.profile.DataFile;
 import ivisionfx.GameApplication;
@@ -15,27 +15,32 @@ import javafx.animation.ScaleTransition;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static ivisionfx.GameApplication.stage;
 
-public class MainController implements Initializable, GameController {
+public class MainController extends Controller implements Initializable, GameController {
+    public Group player;
+
     @FXML
     private Button toggleFullscreenText;
     @FXML
     private ImageView symbol;
 
-    private TuioListener gamepadListener;
+    private GamepadListener gamepadListener;
 
     private final TuioClient client = new TuioClient();
 
@@ -51,12 +56,14 @@ public class MainController implements Initializable, GameController {
     public void initialize(URL location, ResourceBundle resources) {
 
         // Verarbeitung der Benutzereingabe über Reactable-Marker.
-        gamepadListener = new GamepadListener();
+        gamepadListener = new GamepadListener(true);
 
         // UDP-Client, der Datenpakete von Port 3333 abfängt und weiterleitet.
         client.addTuioListener(gamepadListener);
         // Verbindung herstellen und Abfrage starten.
         client.connect();
+
+        Stage stage = GameApplication.stage;
 
         // Nur für Entwicklungszwecke
         if(GameApplication.fullscreen) {
@@ -73,6 +80,7 @@ public class MainController implements Initializable, GameController {
             public void tick(float secondsSinceLastFrame) {
 
                 getUserInput();
+                updatePlayer();
 
             }
         };
@@ -106,7 +114,27 @@ public class MainController implements Initializable, GameController {
         }
     }
 
+    public void addPlayer(int id) {
+        if(!player.getChildren().contains(gamepadListener.playerMap.get(id))) {
+            player.getChildren().add(gamepadListener.playerMap.get(id));
+        }
+    }
 
+    public void removePlayer(int id) {
+        player.getChildren().remove(gamepadListener.playerMap.get(id));
+    }
+    public void updatePlayer() {
+        ArrayList<TuioObject> gamepads = gamepadListener.getGamepads();
+        for (TuioObject gamepad : gamepads) {
+            if(player.getChildren().contains(gamepadListener.playerMap.get(gamepad.getSymbolID()))) {
+                player.getChildren().get(gamepad.getSymbolID()).setTranslateX(gamepad.getX());
+            } else {
+                System.out.printf("Rechteck mit ID %s existiert nooch nicht.%n",gamepad.getSymbolID());
+                addPlayer(gamepad.getSymbolID());
+            }
+
+        }
+    }
 
     @Override
     public void exit() {

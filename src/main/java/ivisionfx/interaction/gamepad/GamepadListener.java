@@ -1,8 +1,11 @@
 package ivisionfx.interaction.gamepad;
 
 import TUIO.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GamepadListener implements TuioListener {
 
@@ -12,12 +15,25 @@ public class GamepadListener implements TuioListener {
     ArrayList<TuioCursor> fingers = new ArrayList<TuioCursor>();
     ArrayList<TuioBlob> blobs = new ArrayList<TuioBlob>();
 
-    public GamepadListener () {
+    public HashMap<Integer,Rectangle> playerMap = new HashMap<>();
 
+    public GamepadListener () {
     }
 
     public GamepadListener (boolean verbose) {
         this.verbose = verbose;
+    }
+
+    public ArrayList<TuioObject> getGamepads() {
+        return gamepads;
+    }
+
+    public ArrayList<TuioCursor> getFingers() {
+        return fingers;
+    }
+
+    public ArrayList<TuioBlob> getBlobs() {
+        return blobs;
     }
 
     @Override
@@ -43,6 +59,8 @@ public class GamepadListener implements TuioListener {
     @Override
     public void addTuioObject(TuioObject tobj) {
         gamepads.add(tobj);
+        playerMap.put(tobj.getSymbolID(),new Rectangle(200,10, Color.BLUE));
+
 
         if(verbose) {
             System.out.printf("Objekt mit Symbol-ID %s hinzugefügt.%n",tobj.getSymbolID());
@@ -52,6 +70,7 @@ public class GamepadListener implements TuioListener {
     @Override
     public void removeTuioObject(TuioObject tobj) {
         gamepads.remove(tobj);
+        playerMap.remove(tobj.getSymbolID());
 
         if(verbose) {
             System.out.printf("Objekt mit Symbol-ID %s entfernt.%n", tobj.getSymbolID());

@@ -6,6 +6,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="ivisionfx.controller.MainController" >
     <top>
         <BorderPane styleClass="header-section">
@@ -26,6 +27,10 @@
                         <Image  url="@../img/marker_0.png" />
                     </image>
                 </ImageView>
+                <Group fx:id="player">
+                    <children>
+                    </children>
+                </Group>
             </children>
         </VBox>
     </center>
@@ -36,7 +41,6 @@
                 <Button fx:id="startGameButton" onAction="#startNewGame" text="Spiel starten"></Button>
                 <Button fx:id="shutDownButton" onAction="#shutDownComputer" text="Computer ausschalten"></Button>
             </children>
-
         </HBox>
     </bottom>
 </BorderPane>
