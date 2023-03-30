@@ -19,14 +19,6 @@
     <center>
         <VBox styleClass="content-section" alignment="CENTER">
             <children>
-                <Label id="content">
-                </Label>
-                <ImageView fx:id="symbol" fitHeight="142" fitWidth="143"
-                           pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image  url="@../img/marker_0.png" />
-                    </image>
-                </ImageView>
                 <Group fx:id="player">
                     <children>
                     </children>

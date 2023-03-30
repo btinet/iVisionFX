@@ -49,6 +49,12 @@ public class MainController extends Controller implements Initializable, GameCon
 
     private GameLoopTimer gameLoop;
 
+    private Circle circle;
+    private Circle circle2;
+
+    private Circle borderLeft = new Circle(0, 340, 100, Color.TRANSPARENT);
+    private Circle borderRight  = new Circle(1280, 340, 100, Color.TRANSPARENT);
+
     public MainController () {
 
     }
@@ -88,6 +94,8 @@ public class MainController extends Controller implements Initializable, GameCon
 
         // ENDE: Game Loop
 
+        player.prefWidth(800);
+        player.prefHeight(600);
         addPlayer();
         gameLoop.start();
 
@@ -138,11 +146,35 @@ public class MainController extends Controller implements Initializable, GameCon
             for (TuioObject gamepad : gamepads) {
                 switch (gamepad.getSymbolID()) {
                     case 1:
-                        double figure = player.getChildren().get(0).getTranslateX();
-                        player.getChildren().get(0).setTranslateX(figure+getSpeed(gamepad.getAngleDegrees()));
+                        double figure = circle.getTranslateX();
+                        double speed = Math.abs(figure+getSpeed(gamepad.getAngleDegrees()));
+                        if(borderLeft.intersects(circle.getBoundsInParent()))
+                        {
+                            circle.setTranslateX(figure+Math.abs(getSpeed(gamepad.getAngleDegrees())));
+                            System.out.println("linker Treffer! (Spieler 1)");
+                        } else if(borderRight.intersects(circle.getBoundsInParent()))
+                        {
+                            circle.setTranslateX(figure-Math.abs(getSpeed(gamepad.getAngleDegrees())));
+                            System.out.println("rechter Treffer! (Spieler 1)");
+                        } else {
+                            circle.setTranslateX(figure+getSpeed(gamepad.getAngleDegrees()));
+                        }
+
                         break;
                     case 2:
-                        System.out.println("Noch nicht implementiert!");
+                        double figure2 = circle2.getTranslateX();
+                        double speed2 = Math.abs(figure2+getSpeed(gamepad.getAngleDegrees()));
+                        if(borderLeft.intersects(circle2.getBoundsInParent()))
+                        {
+                            circle2.setTranslateX(figure2+Math.abs(getSpeed(gamepad.getAngleDegrees())));
+                            System.out.println("linker Treffer! (Spieler 2)");
+                        } else if(borderRight.intersects(circle2.getBoundsInParent()))
+                        {
+                            circle2.setTranslateX(figure2-Math.abs(getSpeed(gamepad.getAngleDegrees())));
+                            System.out.println("rechter Treffer! (Spieler 2)");
+                        } else {
+                            circle2.setTranslateX(figure2+getSpeed(gamepad.getAngleDegrees()));
+                        }
                         break;
                     default:
                         System.out.println("Es sind nur Marker der IDs 1 und 2 erlaubt!");
@@ -154,7 +186,6 @@ public class MainController extends Controller implements Initializable, GameCon
 
     private double getSpeed(float angleDegrees) {
         double x = Math.sin(Math.toRadians(angleDegrees));
-        System.out.printf("Winkel: %s und Sinus: %s%n",angleDegrees,x);
         return x*10;
     }
 
@@ -215,10 +246,8 @@ public class MainController extends Controller implements Initializable, GameCon
 
     @Override
     public void startNewGame() {
-        Circle circle = new Circle(640, 340, 100, Color.TRANSPARENT);
-        circle.setStroke(Color.GREEN);
-        circle.setStrokeWidth(0);
-        circle.setFill(Color.GREEN);
+        circle = new Circle(640, 180, 100, Color.GREEN);
+        circle2 = new Circle(640, 500, 100, Color.BLUE);
 
 
 
@@ -249,13 +278,16 @@ public class MainController extends Controller implements Initializable, GameCon
         }
 
         Pane pane = new Pane(circle);
+        pane.getChildren().add(circle2);
+        pane.getChildren().add(borderLeft);
+        pane.getChildren().add(borderRight);
         Scene scene = new Scene(pane,1280,720);
         stage.setScene(scene);
         //stage.setFullScreen(true);
         stage.show();
         ft.play();
         tlt.play();
-        st.play();
+        // st.play();
     }
 
     public void shutDownComputer () {
