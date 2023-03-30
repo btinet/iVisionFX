@@ -22,6 +22,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.jetbrains.annotations.NotNull;
@@ -87,6 +88,7 @@ public class MainController extends Controller implements Initializable, GameCon
 
         // ENDE: Game Loop
 
+        addPlayer();
         gameLoop.start();
 
     }
@@ -114,26 +116,46 @@ public class MainController extends Controller implements Initializable, GameCon
         }
     }
 
-    public void addPlayer(int id) {
-        if(!player.getChildren().contains(gamepadListener.playerMap.get(id))) {
-            player.getChildren().add(gamepadListener.playerMap.get(id));
-        }
+    public void addPlayer() {
+        Rectangle playerOne = new Rectangle(100,10,Color.GREEN);
+        Rectangle playerTwo = new Rectangle(100,10,Color.BLUE);
+        playerOne.setTranslateY(-100);
+        playerTwo.setTranslateY(+100);
+        this.player.getChildren().add(playerOne);
+        this.player.getChildren().add(playerTwo);
     }
 
     public void removePlayer(int id) {
-        player.getChildren().remove(gamepadListener.playerMap.get(id));
+        player.getChildren().remove(id);
     }
     public void updatePlayer() {
         ArrayList<TuioObject> gamepads = gamepadListener.getGamepads();
-        for (TuioObject gamepad : gamepads) {
-            if(player.getChildren().contains(gamepadListener.playerMap.get(gamepad.getSymbolID()))) {
-                player.getChildren().get(gamepad.getSymbolID()).setTranslateX(gamepad.getX());
-            } else {
-                System.out.printf("Rechteck mit ID %s existiert nooch nicht.%n",gamepad.getSymbolID());
-                addPlayer(gamepad.getSymbolID());
+        int playerCount = gamepads.size();
+        int figureCount = player.getChildren().size();
+        int currentPlayer = 0;
+
+
+            for (TuioObject gamepad : gamepads) {
+                switch (gamepad.getSymbolID()) {
+                    case 1:
+                        double figure = player.getChildren().get(0).getTranslateX();
+                        player.getChildren().get(0).setTranslateX(figure+getSpeed(gamepad.getAngleDegrees()));
+                        break;
+                    case 2:
+                        System.out.println("Noch nicht implementiert!");
+                        break;
+                    default:
+                        System.out.println("Es sind nur Marker der IDs 1 und 2 erlaubt!");
+                }
             }
 
-        }
+
+    }
+
+    private double getSpeed(float angleDegrees) {
+        double x = Math.sin(Math.toRadians(angleDegrees));
+        System.out.printf("Winkel: %s und Sinus: %s%n",angleDegrees,x);
+        return x*10;
     }
 
     @Override
