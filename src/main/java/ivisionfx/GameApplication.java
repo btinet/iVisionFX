@@ -4,7 +4,10 @@ import ivisionfx.interaction.KeyPolling;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.paint.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -37,6 +40,29 @@ public class GameApplication extends Application {
         stage.setResizable(resizable);
         stage.setScene(scene);
         stage.show();
+
+/*
+
+
+        while (true) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+            System.out.print("Bitte Eingabe tätigen: ");
+
+            // Eingabe der Variable 'name' zuweisen:
+            String name = reader.readLine();
+
+            // Ausgabe der Eingabe:
+            System.out.println(name);
+
+            // Wenn Eingabe entspricht 'exit', dann aus der Schleife ausbrechen:
+            if(name.equals("exit")) {
+                System.out.println("Abfrage beendet!");
+                break;
+            }
+        }
+
+ */
 
     }
 
