@@ -23,6 +23,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -54,6 +55,10 @@ public class MainController extends Controller implements Initializable, GameCon
 
     private Rectangle circle;
     private Rectangle circle2;
+
+    private Circle ball = new Circle(640,660,10,Color.BLACK);
+
+    private double ballSpeed = 0;
 
     private Rectangle borderLeft = new Rectangle(0, 0, 10,720 );
     private Rectangle borderRight  = new Rectangle(1270, 0, 10, 720);
@@ -92,6 +97,15 @@ public class MainController extends Controller implements Initializable, GameCon
                 getUserInput();
                 updatePlayer();
 
+                if(circle.getBoundsInParent().intersects(ball.getBoundsInParent())) {
+                    System.out.println("Ping!");
+                    ballSpeed = 5;
+                } else if (circle2.getBoundsInParent().intersects(ball.getBoundsInParent())) {
+                    System.out.println("Pong!");
+                    ballSpeed = -5;
+                }
+                ball.setTranslateY(ball.getTranslateY()+ballSpeed);
+
             }
         };
 
@@ -100,7 +114,7 @@ public class MainController extends Controller implements Initializable, GameCon
         player.prefWidth(800);
         player.prefHeight(600);
         addPlayer();
-        gameLoop.start();
+
 
     }
 
@@ -144,6 +158,8 @@ public class MainController extends Controller implements Initializable, GameCon
         int playerCount = gamepads.size();
         int figureCount = player.getChildren().size();
         int currentPlayer = 0;
+
+
 
 
 
@@ -249,8 +265,8 @@ public class MainController extends Controller implements Initializable, GameCon
 
     @Override
     public void startNewGame() {
-        circle = new Rectangle(640, 180, 100, 10);
-        circle2 = new Rectangle(640, 500, 100, 10);
+        circle = new Rectangle(590, 20, 100, 10);
+        circle2 = new Rectangle(590, 680, 100, 10);
 
         circle.setFill(Color.GREEN);
         circle2.setFill(Color.BLUE);
@@ -294,14 +310,17 @@ public class MainController extends Controller implements Initializable, GameCon
         pane.getChildren().add(circle2);
         pane.getChildren().add(borderLeft);
         pane.getChildren().add(borderRight);
+        pane.getChildren().add(ball);
         Scene scene = new Scene(pane,1280,720);
         stage.setScene(scene);
         //stage.setFullScreen(true);
         stage.show();
         //ft.play();
         //tlt.play();
-        st.play();
-        st2.play();
+        //st.play();
+        //st2.play();
+        ballSpeed = -5;
+        gameLoop.start();
     }
 
     public void shutDownComputer () {

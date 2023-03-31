@@ -16,7 +16,7 @@ public class GameApplication extends Application {
 
     public static Stage stage;
 
-    public static boolean fullscreen = true;
+    public static boolean fullscreen = false;
     public static boolean resizable = false;
     public static int width = 1280;
     public static int height = 720;
