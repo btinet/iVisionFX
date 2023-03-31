@@ -22,6 +22,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -31,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static ivisionfx.GameApplication.stage;
@@ -58,12 +61,21 @@ public class MainController extends Controller implements Initializable, GameCon
 
     private Rectangle circle;
 
+    String sfx1 = "/wav/cancel.wav";
+    Media sound1;
     private double circleOneDirectionX;
     private Rectangle circle2;
 
+    String sfx2 = "/wav/damage.wav";
+    String sfx3 = "/wav/confirm.wav";
+    String bgm1 = "/wav/looperman-l-3216993-0327417-feid-reggaeton-type-loop-cxrxne.wav";
+    Media sound2;
+    Media sound3;
+    Media music1;
+
     private double circleTwoDirectionX;
 
-    private Circle ball = new Circle(640,660,10,Color.BLACK);
+    private Circle ball = new Circle(640,660,10,Color.LIGHTCYAN);
 
     private double ballSpeed = 0;
 
@@ -78,6 +90,16 @@ public class MainController extends Controller implements Initializable, GameCon
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        sound1 = new Media(Objects.requireNonNull(getClass().getResource(sfx1).toExternalForm()));
+        sound3 = new Media(Objects.requireNonNull(getClass().getResource(sfx3).toExternalForm()));
+        sound2 = new Media(Objects.requireNonNull(getClass().getResource(sfx2).toExternalForm()));
+        music1 = new Media(Objects.requireNonNull(getClass().getResource(bgm1).toExternalForm()));
+
+        MediaPlayer musicPlayer = new MediaPlayer(music1);
+        musicPlayer.setVolume(.6);
+        musicPlayer.setCycleCount(-1);
+        musicPlayer.play();
 
         // Verarbeitung der Benutzereingabe über Reactable-Marker.
         gamepadListener = new GamepadListener(true);
@@ -115,11 +137,15 @@ public class MainController extends Controller implements Initializable, GameCon
                 }
 
                 if(circle.getBoundsInParent().intersects(ball.getBoundsInParent())) {
+                    MediaPlayer mediaPlayer = new MediaPlayer(sound1);
+                    mediaPlayer.play();
                     System.out.println("Ping!");
                     System.out.println(ball.getTranslateX()-circle.getTranslateX());
                     ballAngle = Math.sin(Math.toRadians(ball.getTranslateX()-circle.getTranslateX()+random))*5;
                     ballSpeed = 5;
                 } else if (circle2.getBoundsInParent().intersects(ball.getBoundsInParent())) {
+                    MediaPlayer mediaPlayer = new MediaPlayer(sound1);
+                    mediaPlayer.play();
                     System.out.println("Pong!");
                     System.out.println(ball.getTranslateX()-circle2.getTranslateX());
                     ballAngle = Math.sin(Math.toRadians(ball.getTranslateX()-circle2.getTranslateX()+random))*5;
@@ -129,6 +155,8 @@ public class MainController extends Controller implements Initializable, GameCon
 
 
                 if(borderLeft.getBoundsInParent().intersects(ball.getBoundsInParent())) {
+                    MediaPlayer mediaPlayer = new MediaPlayer(sound3);
+                    mediaPlayer.play();
 
                     if (ballAngle < 0) {
                         ballAngle = Math.abs(ballAngle);
@@ -137,7 +165,8 @@ public class MainController extends Controller implements Initializable, GameCon
                     }
 
                 } else if (borderRight.getBoundsInParent().intersects(ball.getBoundsInParent())) {
-
+                    MediaPlayer mediaPlayer = new MediaPlayer(sound3);
+                    mediaPlayer.play();
                     if (ballAngle < 0) {
                         ballAngle = Math.abs(ballAngle);
                     } else {
@@ -400,8 +429,8 @@ public class MainController extends Controller implements Initializable, GameCon
         circle = new Rectangle(590, 20, 100, 10);
         circle2 = new Rectangle(590, 680, 100, 10);
 
-        circle.setFill(Color.GREEN);
-        circle2.setFill(Color.BLUE);
+        circle.setFill(Color.LIGHTCYAN);
+        circle2.setFill(Color.LIGHTCYAN);
 
 
         FillTransition tlt = new FillTransition(Duration.millis(2000),circle);
@@ -438,14 +467,17 @@ public class MainController extends Controller implements Initializable, GameCon
             System.out.println("Kreis berührt sich selbst!");
         }
 
+
+
         Pane pane = new Pane(circle);
         pane.getChildren().add(circle2);
         pane.getChildren().add(borderLeft);
         pane.getChildren().add(borderRight);
         pane.getChildren().add(ball);
+        pane.setStyle("-fx-background-color: #000000");
         Scene scene = new Scene(pane,1280,720);
         stage.setScene(scene);
-        //stage.setFullScreen(true);
+        stage.setFullScreen(true);
         stage.show();
         //ft.play();
         //tlt.play();

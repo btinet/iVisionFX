@@ -6,6 +6,7 @@ module ivisionfx.ivisionfx {
     requires annotations;
     requires batik.transcoder;
     requires java.desktop;
+    requires javafx.media;
 
     opens fxml to javafx.fxml;
     exports ivisionfx.controller;
