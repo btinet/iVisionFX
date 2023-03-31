@@ -1,6 +1,7 @@
 package ivisionfx.interaction.gamepad;
 
 import TUIO.*;
+import ivisionfx.controller.MainController;
 
 import java.util.ArrayList;
 
@@ -11,6 +12,8 @@ public class GamepadListener implements TuioListener {
     ArrayList<TuioObject> gamepads = new ArrayList<TuioObject>();
     ArrayList<TuioCursor> fingers = new ArrayList<TuioCursor>();
     ArrayList<TuioBlob> blobs = new ArrayList<TuioBlob>();
+
+    protected MainController controller;
 
     public GamepadListener () {
     }
@@ -51,9 +54,16 @@ public class GamepadListener implements TuioListener {
 
     }
 
+    public void setController (MainController controller) {
+        this.controller = controller;
+    }
+
     @Override
     public void addTuioObject(TuioObject tobj) {
         gamepads.add(tobj);
+
+        if(tobj.getSymbolID() == 1) controller.playerOneIsPresent = true;
+        if(tobj.getSymbolID() == 2) controller.playerTwoIsPresent = true;
 
 
         if(verbose) {
@@ -64,6 +74,9 @@ public class GamepadListener implements TuioListener {
     @Override
     public void removeTuioObject(TuioObject tobj) {
         gamepads.remove(tobj);
+
+        if(tobj.getSymbolID() == 1) controller.playerOneIsPresent = false;
+        if(tobj.getSymbolID() == 2) controller.playerTwoIsPresent = false;
 
         if(verbose) {
             System.out.printf("Objekt mit Symbol-ID %s entfernt.%n", tobj.getSymbolID());

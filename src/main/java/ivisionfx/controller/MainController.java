@@ -47,6 +47,9 @@ public class MainController extends Controller implements Initializable, GameCon
 
     private GamepadListener gamepadListener;
 
+    public boolean playerOneIsPresent = false;
+    public boolean playerTwoIsPresent = false;
+
     private final TuioClient client = new TuioClient();
 
     private final KeyPolling key = KeyPolling.getInstance();
@@ -54,11 +57,17 @@ public class MainController extends Controller implements Initializable, GameCon
     private GameLoopTimer gameLoop;
 
     private Rectangle circle;
+
+    private double circleOneDirectionX;
     private Rectangle circle2;
+
+    private double circleTwoDirectionX;
 
     private Circle ball = new Circle(640,660,10,Color.BLACK);
 
     private double ballSpeed = 0;
+
+    private double ballAngle = 6;
 
     private Rectangle borderLeft = new Rectangle(0, 0, 10,720 );
     private Rectangle borderRight  = new Rectangle(1270, 0, 10, 720);
@@ -72,6 +81,7 @@ public class MainController extends Controller implements Initializable, GameCon
 
         // Verarbeitung der Benutzereingabe über Reactable-Marker.
         gamepadListener = new GamepadListener(true);
+        gamepadListener.setController(this);
 
         // UDP-Client, der Datenpakete von Port 3333 abfängt und weiterleitet.
         client.addTuioListener(gamepadListener);
@@ -96,14 +106,46 @@ public class MainController extends Controller implements Initializable, GameCon
 
                 getUserInput();
                 updatePlayer();
+                double random;
+
+                if(Math.random() < .5) {
+                    random = -(Math.random()*50);
+                } else {
+                    random = (Math.random()*50);
+                }
 
                 if(circle.getBoundsInParent().intersects(ball.getBoundsInParent())) {
                     System.out.println("Ping!");
+                    System.out.println(ball.getTranslateX()-circle.getTranslateX());
+                    ballAngle = Math.sin(Math.toRadians(ball.getTranslateX()-circle.getTranslateX()+random))*5;
                     ballSpeed = 5;
                 } else if (circle2.getBoundsInParent().intersects(ball.getBoundsInParent())) {
                     System.out.println("Pong!");
+                    System.out.println(ball.getTranslateX()-circle2.getTranslateX());
+                    ballAngle = Math.sin(Math.toRadians(ball.getTranslateX()-circle2.getTranslateX()+random))*5;
                     ballSpeed = -5;
                 }
+
+
+
+                if(borderLeft.getBoundsInParent().intersects(ball.getBoundsInParent())) {
+
+                    if (ballAngle < 0) {
+                        ballAngle = Math.abs(ballAngle);
+                    } else {
+                        ballAngle = -ballAngle;
+                    }
+
+                } else if (borderRight.getBoundsInParent().intersects(ball.getBoundsInParent())) {
+
+                    if (ballAngle < 0) {
+                        ballAngle = Math.abs(ballAngle);
+                    } else {
+                        ballAngle = -ballAngle;
+                    }
+                }
+
+                ball.setTranslateX(ball.getTranslateX()+ballAngle);
                 ball.setTranslateY(ball.getTranslateY()+ballSpeed);
 
             }
@@ -159,15 +201,106 @@ public class MainController extends Controller implements Initializable, GameCon
         int figureCount = player.getChildren().size();
         int currentPlayer = 0;
 
+        if(!playerOneIsPresent) {
+
+            if (circle.getTranslateX()-ball.getTranslateX() > 100) {
+                circle.setTranslateX(circle.getTranslateX()-25);
+            } else
+            if (circle.getTranslateX()-ball.getTranslateX() > 50) {
+                circle.setTranslateX(circle.getTranslateX()-7.5);
+            }  else
+            if (circle.getTranslateX()-ball.getTranslateX() > 10)  {
+                circle.setTranslateX(circle.getTranslateX()-1);
+            }  else
+            if (circle.getTranslateX()-ball.getTranslateX() > 1) {
+                circle.setTranslateX(circle.getTranslateX() - .1);
+            } else {
+                circle.setTranslateX(circle.getTranslateX());
+            }
+
+            if (circle.getTranslateX()-ball.getTranslateX() < -100) {
+                circle.setTranslateX(circle.getTranslateX()+25);
+            } else
+            if (circle.getTranslateX()-ball.getTranslateX() < -50) {
+                circle.setTranslateX(circle.getTranslateX()+7.5);
+            }  else
+            if (circle.getTranslateX()-ball.getTranslateX() < -10)  {
+                circle.setTranslateX(circle.getTranslateX()+1);
+            }  else
+            if (circle.getTranslateX()-ball.getTranslateX() < -1) {
+                circle.setTranslateX(circle.getTranslateX() + .1);
+            } else {
+                circle.setTranslateX(circle.getTranslateX());
+            }
 
 
+            if(borderLeft.intersects(circle.getBoundsInParent()))
+            {
+                circle.setTranslateX(circle.getTranslateX()+circleOneDirectionX);
+                System.out.println("linker Treffer! (Spieler 1)");
+            } else if(borderRight.intersects(circle.getBoundsInParent()))
+            {
+                circle.setTranslateX(circle.getTranslateX()-circleOneDirectionX);
+                System.out.println("rechter Treffer! (Spieler 1)");
+            } else {
+                circle.setTranslateX(circle.getTranslateX());
+            }
+
+        }
+
+        if(!playerTwoIsPresent) {
+
+            if (circle2.getTranslateX()-ball.getTranslateX() > 100) {
+                circle2.setTranslateX(circle2.getTranslateX()-2450);
+            } else
+            if (circle2.getTranslateX()-ball.getTranslateX() > 50) {
+                circle2.setTranslateX(circle2.getTranslateX()-7.5);
+            }  else
+            if (circle2.getTranslateX()-ball.getTranslateX() > 10)  {
+                circle2.setTranslateX(circle2.getTranslateX()-1);
+            }  else
+            if (circle2.getTranslateX()-ball.getTranslateX() > 1) {
+                circle2.setTranslateX(circle2.getTranslateX() - .1);
+            } else {
+                circle2.setTranslateX(circle2.getTranslateX());
+            }
+
+            if (circle2.getTranslateX()-ball.getTranslateX() < -100) {
+                circle2.setTranslateX(circle2.getTranslateX()+25);
+            } else
+            if (circle2.getTranslateX()-ball.getTranslateX() < -50) {
+                circle2.setTranslateX(circle2.getTranslateX()+7.5);
+            }  else
+            if (circle2.getTranslateX()-ball.getTranslateX() < -10)  {
+                circle2.setTranslateX(circle2.getTranslateX()+1);
+            }  else
+            if (circle2.getTranslateX()-ball.getTranslateX() < -1) {
+                circle2.setTranslateX(circle2.getTranslateX() + .1);
+            } else {
+                circle2.setTranslateX(circle2.getTranslateX());
+            }
+
+            if(borderLeft.intersects(circle2.getBoundsInParent()))
+            {
+                circle2.setTranslateX(circle2.getTranslateX()+circleTwoDirectionX);
+                System.out.println("linker Treffer! (Spieler 2)");
+            } else if(borderRight.intersects(circle2.getBoundsInParent()))
+            {
+                circle2.setTranslateX(circle2.getTranslateX()-circleTwoDirectionX);
+                System.out.println("rechter Treffer! (Spieler 2)");
+            } else {
+                circle2.setTranslateX(circle2.getTranslateX());
+            }
+
+        }
 
 
         for (TuioObject gamepad : gamepads) {
+
+
             switch (gamepad.getSymbolID()) {
                 case 1:
                     double figure = circle.getTranslateX();
-                    double speed = Math.abs(figure+getSpeed(gamepad.getAngleDegrees()));
                     if(borderLeft.intersects(circle.getBoundsInParent()))
                     {
                         circle.setTranslateX(figure+Math.abs(getSpeed(gamepad.getAngleDegrees())));
@@ -183,7 +316,6 @@ public class MainController extends Controller implements Initializable, GameCon
                     break;
                 case 2:
                     double figure2 = circle2.getTranslateX();
-                    double speed2 = Math.abs(figure2+getSpeed(gamepad.getAngleDegrees()));
                     if(borderLeft.intersects(circle2.getBoundsInParent()))
                     {
                         circle2.setTranslateX(figure2+Math.abs(getSpeed(gamepad.getAngleDegrees())));
@@ -319,7 +451,7 @@ public class MainController extends Controller implements Initializable, GameCon
         //tlt.play();
         //st.play();
         //st2.play();
-        ballSpeed = -5;
+        ballSpeed = -2;
         gameLoop.start();
     }
 
