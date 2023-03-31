@@ -477,7 +477,7 @@ public class MainController extends Controller implements Initializable, GameCon
         pane.setStyle("-fx-background-color: #000000");
         Scene scene = new Scene(pane,1280,720);
         stage.setScene(scene);
-        stage.setFullScreen(true);
+        stage.setFullScreen(false);
         stage.show();
         //ft.play();
         //tlt.play();
