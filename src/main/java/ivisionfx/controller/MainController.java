@@ -97,7 +97,7 @@ public class MainController extends Controller implements Initializable, GameCon
         music1 = new Media(Objects.requireNonNull(getClass().getResource(bgm1).toExternalForm()));
 
         MediaPlayer musicPlayer = new MediaPlayer(music1);
-        musicPlayer.setVolume(.6);
+        musicPlayer.setVolume(1);
         musicPlayer.setCycleCount(-1);
         musicPlayer.play();
 
